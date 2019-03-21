@@ -1,0 +1,225 @@
+<html>
+<head>
+<title>Computer Vision Project</title>
+<link href='http://fonts.googleapis.com/css?family=Nunito:300|Crimson+Text|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" title="Default" href="styles/github.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+
+<link rel="stylesheet" href="highlighting/styles/default.css">
+<script src="highlighting/highlight.pack.js"></script>
+
+<style type="text/css">
+body {
+	margin: 0px;
+	width: 100%;
+	font-family: 'Crimson Text', serif;
+	font-size: 20px;
+	background: #fcfcfc;
+}
+h1 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 28px;
+	margin: 25px 0px 0px 0px;
+	text-transform: lowercase;
+
+}
+
+h2 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 32px;
+	margin: 15px 0px 35px 0px;
+	color: #333;
+	word-spacing: 3px;
+}
+
+h3 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 26px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+h4 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 22px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+
+h5 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 10px 0px 10px 0px;
+	color: #111;
+	word-spacing: 2px;
+}
+
+p, li {
+	color: #444;
+}
+
+a {
+	color: #DE3737;
+}
+
+.container {
+	margin: 0px auto 0px auto;
+	width: 960px;
+}
+
+#header {
+	background: #333;
+	width: 100%;
+}
+
+#headersub {
+	color: #ccc;
+	width: 960px;
+	margin: 0px auto 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+
+.chart {
+	width: 480px;
+}
+.lol {
+	font-size: 16px;
+	color: #888;
+	font-style: italic;
+}
+.sep {
+	height: 1px;
+	width: 100%;
+	background: #999;
+	margin: 20px 0px 20px 0px;
+}
+.footer{
+	font-size: 16px;
+}
+.latex {
+	width: 100%;
+}
+
+.latex img {
+	display: block;
+	margin: 0px auto 0px auto;
+}
+
+pre {
+	font-family: 'Droid Sans Mono';
+	font-size: 14px;
+}
+
+td img {
+  vertical-align: middle;
+}
+
+#contents a {
+}
+</style>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+</script>
+</head>
+<body>
+<div id="header" >
+<div id="headersub">
+<h1><span style="color: #DE3737">Michael Groff</span></h1>
+</div>
+</div>
+<div class="container">
+
+<h2>Project 1: Image Filtering and Hybrid Images</h2>
+
+<div style="float: right; padding: 20px">
+<img src="hybrid_image1.jpg" />
+<p style="font-size: 14px">Hybrid Image of Cat and Dog, freq = 6.</p>
+</div>
+
+<p> Hybrid images are an interesting superposition of two filtered images one with a low pass Gaussian filter and the other with a corresponding high pass filter. We created a naive algorithm to generate hybrid images by first applying the filters to two images and then adding the two images together. When applying the filters, we first took a block out of the image for each pixel that matched the size of the filter being applied, this block was chosen so that the center was exactly that pixel. Naturally the image has boundaries with pixels that are impossible to pick such a block, to account for this we padded the image by taking the dimensions of the filter (which were strictly odd integers) taking the integer division of each dimension and extending the borders of the image by that much in all four directions. We filled all the new elements of the image with a reflection of the bordering pieces when the filter is applied only pixels values that were in the original neighborhood influenced the filtered image. Then for every pixel in the original we took a block from the padded image, found the dot product of the block and the filter, and replaced the pixel with the sum of all the values in this dot product. Now as we were only provided with a low pass Gaussian filter it was necessary to create a filter that could be used for high pass. By recognizing that the original image was simple the sum of its high and low pass filtered images we had a simple equation I = L + H. Then by substituting in the filters (L = l*I, H = h*I, I = i*I) we were left with our high pass filter h = i – l, where i is the identity filter of all zeros and a single 1 entry in the center. For the last step we used our newly obtained filter on the second image and then simply added the two image matrices together. Since some of the images did go over the desired [0,1] RGB Bounds the final hybrid image was clipped to prevent these spots from showing.
+</p>
+
+
+
+<div style="clear:both">
+<h3>Choosing Images</h3>
+
+<p> When choosing images to create as hybrids it is important to have pictures with similar outlines so that at different distances the gradual change is easier to visually accept. Also vital was the choice of which image to apply the low pass and which to apply the high pass. Some of the more vibrant pictures were hard to make out once the low pass had been applied making it unrecognizable in the resulting hybrid. Once the image order had been chosen the cut-off frequency of the filters was needed to be chosen, A lower cut off made the filter smaller and the algorithm much quicker however in many cases it made one image far to prominent to its pair resulting in a poor hybrid. The same was true with too high of a cutoff frequency.
+</p>
+
+</code></pre>
+
+<table border=1>
+<tr>
+<td>
+<img src="low_frequencies1.jpg" width="24%"/>
+<img src="high_frequencies1.jpg"  width="24%"/>
+<img src="hybrid_image1.jpg" width="24%"/>
+<img src="hybrid_image_scales1.jpg" width="24%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+	<img src="low_frequencies2.jpg" width="24%"/>
+	<img src="high_frequencies2.jpg"  width="24%"/>
+	<img src="hybrid_image2.jpg" width="24%"/>
+	<img src="hybrid_image_scales2.jpg" width="24%"/>
+</td>
+</tr>
+
+</table>
+
+<h3>More Examples</h3>
+
+<p>
+We then created several more hybrid images, tweaking the order and the cut_off frequencies:
+</p>
+
+<ol>
+<li>Plane & Bird, freq = 7.</li>
+<li>Marylin &  Einstein, freq = 5.</li>
+<li>Motorcyle & Bike, freq = 6.</li>
+</ol>
+
+<table border=1>
+<tr>
+<td>
+<img src="low_frequencies3.jpg" width="24%"/>
+<img src="high_frequencies3.jpg"  width="24%"/>
+<img src="hybrid_image3.jpg" width="24%"/>
+<img src="hybrid_image_scales3.jpg" width="24%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+	<img src="low_frequencies4.jpg" width="24%"/>
+	<img src="high_frequencies4.jpg"  width="24%"/>
+	<img src="hybrid_image4.jpg" width="24%"/>
+	<img src="hybrid_image_scales4.jpg" width="24%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+	<img src="low_frequencies5.jpg" width="24%"/>
+	<img src="high_frequencies5.jpg"  width="24%"/>
+	<img src="hybrid_image5.jpg" width="24%"/>
+	<img src="hybrid_image_scales5.jpg" width="24%"/>
+</td>
+</tr>
+
+</table>
+
+<div style="clear:both" >
+<p> 	</p>
+</div>
+</body>
+</html>
